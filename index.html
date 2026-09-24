@@ -1,28 +1,2064 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<title>LIGHTNOVEL.EXE — Parody Library</title>
-<link rel="stylesheet" href="css/style.css">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="theme-color" content="#0b0b10">
+<meta name="description" content="LIGHTNOVEL.EXE — procedurally generated parody light novels.">
+<title>LIGHTNOVEL.EXE</title>
+
+<style>
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+:root {
+    --bg: #08080c;
+    --panel: #111118;
+    --panel2: #17171f;
+    --panel3: #1d1d27;
+    --text: #eeeeF4;
+    --muted: #9b9baa;
+    --line: #2b2b37;
+    --accent: #ffcc66;
+    --accent2: #ff8c66;
+    --danger: #ff667a;
+    --good: #79e2a4;
+    --max: 1250px;
+}
+
+html {
+    background: var(--bg);
+    color: var(--text);
+    font-family:
+        Inter,
+        ui-sans-serif,
+        system-ui,
+        -apple-system,
+        BlinkMacSystemFont,
+        "Segoe UI",
+        sans-serif;
+}
+
+body {
+    min-height: 100vh;
+    background:
+        radial-gradient(circle at 15% 10%, rgba(255, 204, 102, .08), transparent 30rem),
+        radial-gradient(circle at 85% 20%, rgba(255, 102, 122, .06), transparent 28rem),
+        var(--bg);
+}
+
+button {
+    font: inherit;
+}
+
+button:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 3px;
+}
+
+.app {
+    width: min(100%, var(--max));
+    margin: auto;
+    padding:
+        max(18px, env(safe-area-inset-top))
+        max(18px, env(safe-area-inset-right))
+        max(28px, env(safe-area-inset-bottom))
+        max(18px, env(safe-area-inset-left));
+}
+
+.topbar {
+    position: sticky;
+    top: 0;
+    z-index: 20;
+    margin: 0 -18px;
+    padding: 14px 18px;
+    border-bottom: 1px solid var(--line);
+    background: rgba(8, 8, 12, .92);
+    backdrop-filter: blur(14px);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 14px;
+}
+
+.logo {
+    color: var(--text);
+    text-decoration: none;
+    font-weight: 950;
+    letter-spacing: .08em;
+    font-size: clamp(15px, 2vw, 20px);
+}
+
+.logo span {
+    color: var(--accent);
+}
+
+.top-actions {
+    display: flex;
+    gap: 8px;
+}
+
+.btn {
+    border: 1px solid var(--line);
+    background: var(--panel);
+    color: var(--text);
+    padding: 10px 14px;
+    border-radius: 9px;
+    cursor: pointer;
+    font-weight: 800;
+    font-size: 13px;
+    transition: .18s ease;
+}
+
+.btn:hover {
+    border-color: #555565;
+    transform: translateY(-1px);
+}
+
+.btn.primary {
+    background: var(--accent);
+    color: #111;
+    border-color: var(--accent);
+}
+
+.btn.danger {
+    background: transparent;
+    color: var(--danger);
+}
+
+.hero {
+    padding: 62px 0 34px;
+}
+
+.kicker {
+    color: var(--accent);
+    font-weight: 900;
+    letter-spacing: .18em;
+    font-size: 12px;
+    margin-bottom: 14px;
+}
+
+.hero h1 {
+    font-size: clamp(42px, 9vw, 92px);
+    line-height: .9;
+    letter-spacing: -.065em;
+    max-width: 900px;
+}
+
+.hero h1 span {
+    color: var(--accent);
+}
+
+.hero p {
+    max-width: 760px;
+    margin-top: 24px;
+    color: var(--muted);
+    line-height: 1.75;
+    font-size: clamp(15px, 2vw, 18px);
+}
+
+.hero-actions {
+    margin-top: 25px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.status {
+    margin-top: 22px;
+    padding: 13px 15px;
+    background: var(--panel);
+    border: 1px solid var(--line);
+    border-radius: 10px;
+    color: var(--muted);
+    font-size: 13px;
+}
+
+.status strong {
+    color: var(--good);
+}
+
+.library {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 18px;
+}
+
+.novel-header {
+    background: var(--panel);
+    border: 1px solid var(--line);
+    border-radius: 16px;
+    padding: clamp(20px, 4vw, 38px);
+}
+
+.novel-label {
+    color: var(--accent);
+    font-weight: 900;
+    font-size: 12px;
+    letter-spacing: .16em;
+}
+
+.novel-title {
+    margin-top: 10px;
+    font-size: clamp(30px, 6vw, 65px);
+    line-height: 1.02;
+    letter-spacing: -.045em;
+}
+
+.novel-synopsis {
+    margin-top: 20px;
+    max-width: 850px;
+    color: #c5c5cf;
+    line-height: 1.75;
+    font-size: clamp(15px, 2vw, 18px);
+}
+
+.tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 7px;
+    margin-top: 20px;
+}
+
+.tag {
+    border: 1px solid var(--line);
+    color: var(--muted);
+    background: var(--panel2);
+    padding: 6px 9px;
+    border-radius: 999px;
+    font-size: 11px;
+    font-weight: 800;
+}
+
+.meta-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 10px;
+    margin-top: 22px;
+}
+
+.meta-box {
+    background: var(--panel2);
+    border: 1px solid var(--line);
+    border-radius: 10px;
+    padding: 13px;
+}
+
+.meta-box small {
+    display: block;
+    color: var(--muted);
+    font-size: 10px;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: .08em;
+}
+
+.meta-box strong {
+    display: block;
+    margin-top: 5px;
+    font-size: 15px;
+}
+
+.world {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 18px;
+}
+
+.panel {
+    background: var(--panel);
+    border: 1px solid var(--line);
+    border-radius: 16px;
+    padding: clamp(18px, 3vw, 28px);
+}
+
+.panel h2 {
+    font-size: 17px;
+    margin-bottom: 13px;
+}
+
+.panel p,
+.panel li {
+    color: #b8b8c3;
+    line-height: 1.7;
+    font-size: 14px;
+}
+
+.panel ul {
+    padding-left: 19px;
+}
+
+.reader {
+    display: grid;
+    grid-template-columns: 270px minmax(0, 1fr);
+    gap: 20px;
+    margin-top: 18px;
+}
+
+.sidebar {
+    position: sticky;
+    top: 74px;
+    align-self: start;
+}
+
+.side-section + .side-section {
+    margin-top: 20px;
+}
+
+.side-label {
+    color: var(--muted);
+    text-transform: uppercase;
+    font-weight: 900;
+    letter-spacing: .1em;
+    font-size: 10px;
+    margin-bottom: 6px;
+}
+
+.side-value {
+    font-size: 14px;
+    line-height: 1.5;
+}
+
+.chapter {
+    min-width: 0;
+    background: #0d0d13;
+    border: 1px solid var(--line);
+    border-radius: 16px;
+    padding: clamp(20px, 5vw, 55px);
+}
+
+.chapter-top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 15px;
+    flex-wrap: wrap;
+    border-bottom: 1px solid var(--line);
+    padding-bottom: 18px;
+    margin-bottom: 25px;
+}
+
+.chapter-number {
+    color: var(--accent);
+    font-size: 12px;
+    font-weight: 950;
+    letter-spacing: .13em;
+}
+
+.chapter-pov {
+    color: var(--muted);
+    font-size: 12px;
+    font-weight: 800;
+}
+
+.chapter h2 {
+    font-size: clamp(27px, 5vw, 48px);
+    line-height: 1.05;
+    letter-spacing: -.035em;
+    max-width: 850px;
+}
+
+.chapter-intro {
+    margin-top: 13px;
+    color: var(--muted);
+    font-style: italic;
+    line-height: 1.65;
+}
+
+.story {
+    max-width: 780px;
+    margin: 30px auto 0;
+}
+
+.story p {
+    color: #e0e0e7;
+    font-family:
+        Georgia,
+        "Times New Roman",
+        serif;
+    font-size: clamp(17px, 2.2vw, 20px);
+    line-height: 1.9;
+    margin-bottom: 1.45em;
+}
+
+.story p.dialogue {
+    padding-left: 16px;
+    border-left: 2px solid #3a3a48;
+}
+
+.story .thought {
+    color: #aaaab7;
+    font-style: italic;
+}
+
+.chapter-controls {
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
+    gap: 10px;
+    margin-top: 35px;
+    padding-top: 22px;
+    border-top: 1px solid var(--line);
+}
+
+.chapter-controls .next {
+    justify-self: end;
+}
+
+.chapter-count {
+    align-self: center;
+    color: var(--muted);
+    font-size: 12px;
+    font-weight: 800;
+    text-align: center;
+}
+
+.progress {
+    height: 4px;
+    background: var(--panel3);
+    margin-top: 14px;
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+.progress div {
+    height: 100%;
+    width: 0%;
+    background: var(--accent);
+    transition: width .2s ease;
+}
+
+.footer {
+    padding: 45px 0 20px;
+    color: #666675;
+    text-align: center;
+    font-size: 12px;
+    line-height: 1.7;
+}
+
+.hidden {
+    display: none !important;
+}
+
+@media (max-width: 900px) {
+    .reader {
+        grid-template-columns: 1fr;
+    }
+
+    .sidebar {
+        position: static;
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 10px;
+    }
+
+    .side-section + .side-section {
+        margin-top: 0;
+    }
+
+    .side-section {
+        background: var(--panel);
+        border: 1px solid var(--line);
+        border-radius: 10px;
+        padding: 12px;
+    }
+
+    .world {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 680px) {
+    .app {
+        padding-left: 12px;
+        padding-right: 12px;
+    }
+
+    .topbar {
+        margin-left: -12px;
+        margin-right: -12px;
+        padding-left: 12px;
+        padding-right: 12px;
+    }
+
+    .top-actions .btn {
+        padding: 9px 10px;
+    }
+
+    .hero {
+        padding-top: 45px;
+    }
+
+    .meta-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .sidebar {
+        grid-template-columns: 1fr 1fr;
+    }
+
+    .chapter-controls {
+        grid-template-columns: 1fr 1fr;
+    }
+
+    .chapter-count {
+        grid-column: 1 / -1;
+        grid-row: 1;
+    }
+
+    .chapter-controls .next {
+        justify-self: stretch;
+    }
+
+    .chapter-controls .prev {
+        width: 100%;
+    }
+
+    .chapter {
+        border-radius: 12px;
+        padding: 20px 16px;
+    }
+
+    .story p {
+        font-size: 18px;
+        line-height: 1.82;
+    }
+}
+
+@media (max-width: 430px) {
+    .logo {
+        font-size: 13px;
+    }
+
+    .top-actions .btn {
+        font-size: 11px;
+        padding: 8px;
+    }
+
+    .meta-grid {
+        grid-template-columns: 1fr 1fr;
+    }
+
+    .sidebar {
+        grid-template-columns: 1fr;
+    }
+
+    .hero h1 {
+        font-size: 47px;
+    }
+
+    .hero-actions {
+        display: grid;
+        grid-template-columns: 1fr;
+    }
+
+    .hero-actions .btn {
+        width: 100%;
+    }
+
+    .chapter-controls {
+        grid-template-columns: 1fr;
+    }
+
+    .chapter-count {
+        grid-column: auto;
+        grid-row: auto;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+        scroll-behavior: auto !important;
+        transition: none !important;
+    }
+}
+</style>
 </head>
+
 <body>
+
+<div class="app">
+
 <header class="topbar">
-  <a class="logo" href="index.html">LIGHTNOVEL<span>.EXE</span></a>
-  <button id="shuffle" class="ghost">RANDOM NOVEL</button>
+    <a href="#" class="logo" onclick="location.reload();return false;">
+        LIGHTNOVEL<span>.EXE</span>
+    </a>
+
+    <div class="top-actions">
+        <button class="btn" id="randomTop">RANDOM NOVEL</button>
+        <button class="btn danger" id="resetBtn">NEW WORLD</button>
+    </div>
 </header>
-<main>
-  <section class="hero">
-    <p class="eyebrow">STATIC PARODY NOVEL LIBRARY</p>
-    <h1>500+ CHAPTERS.<br><span>ZERO DIGNITY.</span></h1>
-    <p>Complete procedurally written parody light novels with rotating POVs, persistent story threads, ridiculous world rules and enough chapters to make sensible people leave.</p>
-  </section>
-  <section class="notice">
-    <strong>NO ACCOUNT. NO DATABASE. NO API.</strong>
-    <span>Everything needed to read is shipped with the static site.</span>
-  </section>
-  <section id="grid" class="grid"></section>
-</main>
-<script src="js/app.js"></script>
+
+<section class="hero">
+
+    <div class="kicker">STATIC PARODY NOVEL GENERATOR</div>
+
+    <h1>
+        500+ CHAPTERS.<br>
+        <span>ZERO DIGNITY.</span>
+    </h1>
+
+    <p>
+        A completely procedural parody light-novel engine running inside your
+        browser. Every fresh page load creates a different world, premise,
+        cast, conflict, story structure and 520-chapter disaster.
+    </p>
+
+    <div class="hero-actions">
+        <button class="btn primary" id="generateBtn">
+            GENERATE NEW NOVEL
+        </button>
+
+        <button class="btn" id="jumpBtn">
+            RANDOM CHAPTER
+        </button>
+    </div>
+
+    <div class="status" id="status">
+        <strong>GENERATOR READY.</strong>
+        Building a completely unnecessary literary disaster...
+    </div>
+
+</section>
+
+<main id="novelArea" class="library"></main>
+
+<footer class="footer">
+    LIGHTNOVEL.EXE — No account. No database. No API.<br>
+    Everything is procedurally generated in your browser.
+</footer>
+
+</div>
+
+<script>
+"use strict";
+
+/* ============================================================
+   LIGHTNOVEL.EXE
+   CLIENT-SIDE PROCEDURAL LIGHT NOVEL ENGINE
+   ============================================================ */
+
+/* -------------------------
+   RANDOM ENGINE
+------------------------- */
+
+class RNG {
+
+    constructor(seed) {
+        this.seed = seed >>> 0;
+    }
+
+    next() {
+        this.seed += 0x6D2B79F5;
+
+        let t = this.seed;
+
+        t = Math.imul(t ^ t >>> 15, t | 1);
+        t ^= t + Math.imul(t ^ t >>> 7, t | 61);
+
+        return ((t ^ t >>> 14) >>> 0) / 4294967296;
+    }
+
+    int(min, max) {
+        return Math.floor(this.next() * (max - min + 1)) + min;
+    }
+
+    pick(arr) {
+        return arr[this.int(0, arr.length - 1)];
+    }
+
+    chance(percent) {
+        return this.next() * 100 < percent;
+    }
+
+    shuffle(arr) {
+        const copy = [...arr];
+
+        for (let i = copy.length - 1; i > 0; i--) {
+            const j = this.int(0, i);
+            [copy[i], copy[j]] = [copy[j], copy[i]];
+        }
+
+        return copy;
+    }
+}
+
+
+/* -------------------------
+   DATA BANKS
+------------------------- */
+
+const FIRST_NAMES = [
+    "Ari","Mira","Kael","Nora","Tavi","Lena","Rin","Bram",
+    "Sora","Vera","Ivo","Milo","Cora","Nell","Dax","Yuri",
+    "Fenn","Rhea","Oren","Pia","Kira","Juno","Bela","Tess",
+    "Mara","Rook","Eli","Voss","Nia","Perrin","Sable","Theo"
+];
+
+const LAST_NAMES = [
+    "Graves","Bellweather","Morrow","Pennyworth","Ashford",
+    "Dusk","Underbridge","Quill","Wobbleton","Ironleaf",
+    "Thistle","Crowe","Marrow","Puddle","Stone","Fallow",
+    "Bright","Nettle","Crumb","Vane","Moss","Flint","Vale",
+    "Biscuit","Rookwood","Glimmer","Turnip","North","West"
+];
+
+const ROLES = [
+    {
+        role:"Disgraced Hero",
+        goal:"prove that the legendary prophecy was badly formatted",
+        flaw:"cannot resist dramatic entrances",
+        secret:"once defeated a monster by accidentally submitting the correct paperwork"
+    },
+    {
+        role:"Royal Accountant",
+        goal:"make the apocalypse financially sustainable",
+        flaw:"takes every promise literally",
+        secret:"the national treasury is hidden inside a lunchbox"
+    },
+    {
+        role:"Guild Receptionist",
+        goal:"finish one workday without an adventurer screaming",
+        flaw:"terrible at recognizing royalty",
+        secret:"quietly controls half the guild through appointment scheduling"
+    },
+    {
+        role:"Part-Time Villain",
+        goal:"retire before the final battle",
+        flaw:"explains plans too thoroughly",
+        secret:"their evil fortress is rented month-to-month"
+    },
+    {
+        role:"Cursed Scholar",
+        goal:"discover why the ancient curse has terrible grammar",
+        flaw:"corrects people during emergencies",
+        secret:"the curse is actually a customer complaint"
+    },
+    {
+        role:"Dungeon Manager",
+        goal:"increase dungeon profitability",
+        flaw:"cares too much about workplace safety",
+        secret:"the dungeon has an employee handbook"
+    },
+    {
+        role:"Wandering Baker",
+        goal:"find the legendary oven",
+        flaw:"solves emotional problems with pastries",
+        secret:"their bread can temporarily cancel magic"
+    },
+    {
+        role:"Royal Knight",
+        goal:"protect the kingdom from its own government",
+        flaw:"cannot lie convincingly",
+        secret:"has been ordered to arrest the protagonist three different times"
+    },
+    {
+        role:"Village Mayor",
+        goal:"keep the village off every prophecy",
+        flaw:"aggressively practical",
+        secret:"the village is sitting on an ancient superweapon"
+    },
+    {
+        role:"Demon Bureaucrat",
+        goal:"complete the paperwork required for the apocalypse",
+        flaw:"needs three signatures for everything",
+        secret:"the Demon King owes them overtime"
+    },
+    {
+        role:"Merchant",
+        goal:"sell something to the final boss",
+        flaw:"negotiates during combat",
+        secret:"already owns a contract with destiny"
+    },
+    {
+        role:"Monster",
+        goal:"become a respected member of society",
+        flaw:"looks terrifying while being polite",
+        secret:"is the only person who remembers the previous timeline"
+    },
+    {
+        role:"Prophecy Intern",
+        goal:"stop the prophecy department from firing them",
+        flaw:"keeps losing important scrolls",
+        secret:"wrote one of the prophecies while bored"
+    },
+    {
+        role:"Academy Dropout",
+        goal:"prove practical experience beats magical theory",
+        flaw:"reckless confidence",
+        secret:"knows the academy's forbidden shortcut"
+    },
+    {
+        role:"Royal Chef",
+        goal:"cook a meal capable of ending a war",
+        flaw:"takes insults about soup personally",
+        secret:"their recipes contain ancient spell diagrams"
+    },
+    {
+        role:"Time Traveler",
+        goal:"return home",
+        flaw:"keeps remembering things that have not happened",
+        secret:"this is not their first attempt"
+    },
+    {
+        role:"Temple Clerk",
+        goal:"determine why the gods stopped answering emails",
+        flaw:"obsessively organized",
+        secret:"one god still replies anonymously"
+    },
+    {
+        role:"Retired Necromancer",
+        goal:"enjoy a quiet retirement",
+        flaw:"accidentally raises furniture",
+        secret:"the dead keep asking them for career advice"
+    },
+    {
+        role:"Princess",
+        goal:"avoid becoming a political marriage solution",
+        flaw:"turns every problem into a negotiation",
+        secret:"has been secretly funding the rebellion"
+    },
+    {
+        role:"Ordinary Villager",
+        goal:"remain completely irrelevant",
+        flaw:"suspiciously competent",
+        secret:"is the legal owner of the continent"
+    }
+];
+
+const WORLDS = [
+    {
+        name:"The Republic of Unnecessary Kingdoms",
+        rule:"Every village is legally required to have a royal family.",
+        magic:"Magic is activated by forms, stamps and sufficiently sincere bureaucracy.",
+        oddity:"Nobody agrees which kingdom is actually in charge."
+    },
+    {
+        name:"The Continent of Borrowed Tomorrows",
+        rule:"People can borrow future days, but someone has to repay them.",
+        magic:"Time can be traded like currency.",
+        oddity:"Several towns are currently living on next Tuesday."
+    },
+    {
+        name:"The Seven Provinces of Specific Laws",
+        rule:"Every province has one extremely specific law nobody remembers creating.",
+        magic:"Breaking a local law produces unpredictable magical consequences.",
+        oddity:"Travel guides are considered survival equipment."
+    },
+    {
+        name:"The Moonlit Federation of Mostly Normal People",
+        rule:"Everything is normal except during moonlight.",
+        magic:"Moonlight grants power to objects that nobody considers important.",
+        oddity:"Spoons are politically influential."
+    },
+    {
+        name:"The Kingdom Beneath the Extremely Large Hat",
+        rule:"The hat is considered sovereign territory.",
+        magic:"Hats can contain impossible spaces.",
+        oddity:"The capital is somewhere under the brim."
+    },
+    {
+        name:"The Inland Sea of Forty-Nine Mayors",
+        rule:"Every town is governed by a different mayor who insists they are supreme.",
+        magic:"Political arguments can physically alter geography.",
+        oddity:"The map changes after elections."
+    },
+    {
+        name:"The Empire of Suspiciously Convenient Quests",
+        rule:"Every problem must be converted into a quest.",
+        magic:"Quest descriptions can alter reality.",
+        oddity:"Nobody is allowed to say the words 'side quest'."
+    },
+    {
+        name:"The Archipelago of Extremely Honest Villains",
+        rule:"Villains must legally announce their intentions.",
+        magic:"Truth becomes physically stronger when spoken dramatically.",
+        oddity:"Heroes keep accidentally defeating enemies by asking direct questions."
+    },
+    {
+        name:"The Kingdom of Infinite Loading Screens",
+        rule:"Important events require loading.",
+        magic:"Waiting increases magical potential.",
+        oddity:"The royal family has been waiting for a staircase to finish loading for 400 years."
+    },
+    {
+        name:"The Great Valley of Questionable Prophecies",
+        rule:"Prophecies are legally non-binding.",
+        magic:"Predictions become stronger when nobody understands them.",
+        oddity:"Prophecy lawyers are among the highest-paid professionals."
+    }
+];
+
+const PREMISES = [
+    "A reincarnated office worker discovers that their legendary skill is completely useless but extremely well documented.",
+    "A hero summoned to save the world is accidentally employed by the Demon King.",
+    "A village accidentally becomes the headquarters of an international conspiracy because somebody filed the wrong tax form.",
+    "A supposedly ordinary person discovers that every major historical event was caused by scheduling mistakes.",
+    "A rejected adventurer becomes responsible for managing the world's most badly designed dungeon.",
+    "A prophecy predicts the arrival of a chosen hero but accidentally names the kingdom's accountant.",
+    "A Demon King tries to retire peacefully and discovers that nobody knows how to process the retirement paperwork.",
+    "A royal princess escapes an arranged marriage only to discover that destiny has apparently followed her into the kitchen.",
+    "A monster wants to live peacefully among humans, but the guild keeps assigning it extermination quests.",
+    "A time traveler returns to prevent the apocalypse and discovers that the apocalypse has already been postponed.",
+    "An academy dropout discovers a forbidden magical shortcut and immediately regrets understanding it.",
+    "A wandering baker discovers that certain pastries can defeat magical barriers.",
+    "A village mayor attempts to keep their town out of every prophecy and accidentally creates the most important kingdom on the continent.",
+    "A royal knight is ordered to arrest the same person every week and begins questioning the kingdom's administrative competence.",
+    "A bureaucrat discovers that the final boss is technically missing several required permits.",
+    "A retired necromancer accidentally summons the ghost of an extremely annoying tax inspector.",
+    "A merchant purchases a mysterious contract that appears to contain ownership rights to destiny itself.",
+    "A prophecy intern loses the document predicting the end of the world and must find it before someone notices.",
+    "A perfectly normal citizen discovers that they are legally the owner of the entire continent.",
+    "A guild receptionist becomes the only person capable of stopping a war because everyone needs an appointment."
+];
+
+const LOCATIONS = [
+    "the capital's overcrowded guild hall",
+    "the royal archive",
+    "the market district",
+    "the abandoned prophecy office",
+    "the western dungeon",
+    "the village of Seven Puddles",
+    "the floating courthouse",
+    "the moonlit train station",
+    "the royal kitchen",
+    "the forbidden library",
+    "the border checkpoint",
+    "the demon bureaucracy",
+    "the mountain shrine",
+    "the underground parliament",
+    "the suspiciously cheap inn",
+    "the academy ruins",
+    "the old battlefield",
+    "the kingdom's storage warehouse",
+    "the mayoral conference hall",
+    "the legendary bakery"
+];
+
+const OBJECTS = [
+    "a glowing contract",
+    "a suspiciously ordinary spoon",
+    "an ancient quest board",
+    "a cracked prophecy crystal",
+    "a royal invoice",
+    "a talking key",
+    "a forbidden recipe",
+    "a dented crown",
+    "a map that refuses to stay still",
+    "a cursed appointment book",
+    "a ceremonial stamp",
+    "a mysterious lunchbox",
+    "a sword with poor communication skills",
+    "a sealed envelope",
+    "a magical receipt",
+    "an extremely expensive potato",
+    "a bell that rings before disasters",
+    "a blank spellbook",
+    "a golden employee badge",
+    "a broken teleportation ticket"
+];
+
+const ARC_THEMES = [
+    "The Completely Unnecessary Beginning",
+    "The Guild Has Made a Mistake",
+    "The First Prophecy Problem",
+    "The Dungeon Nobody Budgeted For",
+    "The Royal Administrative Crisis",
+    "The Academy Incident",
+    "The Demon King's Extremely Bad Week",
+    "The Tournament Nobody Requested",
+    "The Village That Should Not Exist",
+    "The Missing Artifact",
+    "The Time Debt",
+    "The Political Soup Incident",
+    "The War That Requires Permission",
+    "The Forbidden Recipe",
+    "The Final Boss's Tax Problem",
+    "The Absolutely Necessary Road Trip",
+    "The Rebellion's Accounting Department",
+    "The Capital Goes Missing",
+    "The Great Bureaucratic Catastrophe",
+    "The End of Everything, Probably"
+];
+
+const CHAPTER_FORMS = [
+    "A Problem Nobody Ordered",
+    "The Meeting That Should Have Been an Email",
+    "A Very Bad Discovery",
+    "The Person Behind the Door",
+    "An Unexpected Invoice",
+    "The Quest Was Technically Legal",
+    "The Plan Immediately Became Worse",
+    "A Secret Nobody Needed",
+    "The Wrong Person Arrives",
+    "An Argument With Consequences",
+    "The Object Had Opinions",
+    "A Surprisingly Expensive Afternoon",
+    "The Prophecy Makes Things Worse",
+    "Someone Has Read the Fine Print",
+    "The Monster Makes a Reasonable Point",
+    "A Door That Should Not Be There",
+    "The Villain Requests Clarification",
+    "The Hero Has a Spreadsheet",
+    "An Extremely Suspicious Celebration",
+    "Nobody Prepared for This"
+];
+
+const ACTIONS = [
+    "argued",
+    "negotiated",
+    "investigated",
+    "escaped",
+    "celebrated",
+    "lied",
+    "confessed",
+    "traded",
+    "stole",
+    "repaired",
+    "challenged",
+    "questioned",
+    "misunderstood",
+    "calculated",
+    "panicked",
+    "improvised",
+    "threatened",
+    "apologized",
+    "schemed",
+    "waited"
+];
+
+const REACTIONS = [
+    "Nobody applauded.",
+    "Someone immediately asked for a receipt.",
+    "The room became noticeably quieter.",
+    "This was considered legally complicated.",
+    "Three people pretended they had expected this.",
+    "The prophecy department would later deny everything.",
+    "The nearest bureaucrat sighed.",
+    "The guild receptionist wrote it down.",
+    "The villain looked genuinely offended.",
+    "The hero reconsidered several life choices.",
+    "A nearby spoon fell over for no apparent reason.",
+    "Everyone agreed this was somebody else's problem.",
+    "The situation became significantly more expensive.",
+    "The map changed again.",
+    "Nobody had a backup plan."
+];
+
+
+/* -------------------------
+   CHARACTER GENERATION
+------------------------- */
+
+function makeCharacters(rng) {
+
+    const shuffledRoles = rng.shuffle(ROLES);
+
+    return shuffledRoles.map((template, index) => {
+
+        const first = rng.pick(FIRST_NAMES);
+        const last = rng.pick(LAST_NAMES);
+
+        return {
+            id: index,
+            name: `${first} ${last}`,
+            role: template.role,
+            goal: template.goal,
+            flaw: template.flaw,
+            secret: template.secret,
+            voice: rng.pick([
+                "dry",
+                "dramatic",
+                "practical",
+                "anxious",
+                "sarcastic",
+                "formal",
+                "optimistic",
+                "suspicious"
+            ]),
+            knowledge: [],
+            relationships: [],
+            location: rng.pick(LOCATIONS),
+            alive: true,
+            trust: rng.int(20, 80)
+        };
+    });
+}
+
+
+/* -------------------------
+   STORY ENGINE
+------------------------- */
+
+class NovelEngine {
+
+    constructor(seed) {
+
+        this.seed = seed;
+
+        this.rng = new RNG(seed);
+
+        this.world = this.rng.pick(WORLDS);
+
+        this.premise = this.rng.pick(PREMISES);
+
+        this.characters = makeCharacters(this.rng);
+
+        this.protagonist = this.characters[
+            this.rng.int(0, this.characters.length - 1)
+        ];
+
+        this.antagonist = this.characters.find(
+            c => c.role === "Part-Time Villain" ||
+                 c.role === "Demon Bureaucrat"
+        ) || this.characters[1];
+
+        this.arcs = [];
+
+        this.threads = [];
+
+        this.usedTitles = new Set();
+
+        this.usedEvents = new Set();
+
+        this.usedCombinations = new Set();
+
+        this.chapters = [];
+
+        this.buildWorld();
+
+        this.buildArcs();
+
+        this.buildThreads();
+
+        this.generateChapters();
+    }
+
+
+    buildWorld() {
+
+        this.worldFeatures = [
+            this.world.rule,
+            this.world.magic,
+            this.world.oddity,
+            `The dominant social obsession is ${this.rng.pick([
+                "paperwork",
+                "quests",
+                "prophecies",
+                "royal etiquette",
+                "guild rankings",
+                "magical licensing",
+                "heroic reputation",
+                "extremely complicated taxes"
+            ])}.`,
+            `The most feared public institution is ${this.rng.pick([
+                "the guild",
+                "the royal archive",
+                "the prophecy department",
+                "the licensing office",
+                "the royal treasury",
+                "the demon administration"
+            ])}.`
+        ];
+    }
+
+
+    buildArcs() {
+
+        const themes = this.rng.shuffle(ARC_THEMES);
+
+        for (let i = 0; i < 20; i++) {
+
+            this.arcs.push({
+                index: i,
+                title: themes[i],
+                start: i * 26,
+                end: i === 19 ? 519 : (i * 26) + 25,
+                objective: this.rng.pick([
+                    "discover the truth",
+                    "survive the consequences",
+                    "repair an impossible mistake",
+                    "protect an increasingly confused population",
+                    "recover a dangerous object",
+                    "prevent an administrative disaster",
+                    "understand what the prophecy actually means",
+                    "stop the antagonist from making things worse"
+                ]),
+                complication: this.rng.pick([
+                    "a second faction becomes involved",
+                    "the original plan becomes legally invalid",
+                    "someone reveals incomplete information",
+                    "the world rule creates an unexpected loophole",
+                    "the protagonist misunderstands an important detail",
+                    "the villain is technically correct",
+                    "an unrelated quest interferes",
+                    "a character changes sides"
+                ])
+            });
+        }
+    }
+
+
+    buildThreads() {
+
+        const threadNames = [
+            "The Missing Prophecy",
+            "The Ownership Contract",
+            "The Mysterious Artifact",
+            "The Demon King's Retirement",
+            "The Hidden Village",
+            "The Time Debt",
+            "The Broken Guild Rule",
+            "The Identity Question",
+            "The Ancient Recipe",
+            "The Impossible Invoice",
+            "The Previous Timeline",
+            "The Forbidden Door"
+        ];
+
+        this.threads = this.rng.shuffle(threadNames).map(
+            (name, index) => ({
+                id: index,
+                name,
+                opened: this.rng.int(1, 35),
+                resolved: null,
+                progress: 0,
+                importance: this.rng.int(1, 5)
+            })
+        );
+    }
+
+
+    arcFor(chapter) {
+
+        return this.arcs.find(
+            arc => chapter >= arc.start && chapter <= arc.end
+        ) || this.arcs[this.arcs.length - 1];
+    }
+
+
+    pickPOV(chapter) {
+
+        if (chapter === 0) {
+            return this.protagonist;
+        }
+
+        if (chapter % 17 === 0) {
+            return this.antagonist;
+        }
+
+        if (chapter % 11 === 0) {
+            return this.characters[
+                (chapter * 7) % this.characters.length
+            ];
+        }
+
+        if (chapter % 7 === 0) {
+            return this.characters[
+                (chapter * 13) % this.characters.length
+            ];
+        }
+
+        return this.characters[
+            (chapter * 5 + this.seed) % this.characters.length
+        ];
+    }
+
+
+    pickThread(chapter) {
+
+        const available = this.threads.filter(
+            t => t.opened <= chapter && !t.resolved
+        );
+
+        if (!available.length) {
+            return this.rng.pick(this.threads);
+        }
+
+        return available[
+            this.rng.int(0, available.length - 1)
+        ];
+    }
+
+
+    updateThread(thread, chapter) {
+
+        if (!thread) return;
+
+        thread.progress += this.rng.int(1, 7);
+
+        if (
+            thread.progress >= 100 &&
+            !thread.resolved &&
+            chapter > thread.opened + 10
+        ) {
+            thread.resolved = chapter;
+        }
+    }
+
+
+    generateTitle(chapter, arc, pov, location, object) {
+
+        let title;
+
+        const forms = [
+            `${this.rng.pick(CHAPTER_FORMS)} at ${location}`,
+            `${pov.role} Discovers ${object}`,
+            `${this.rng.pick(CHAPTER_FORMS)}: ${arc.title}`,
+            `${object} Was Not Supposed to Be Here`,
+            `${pov.name} Has Questions About ${object}`,
+            `The ${arc.title} Becomes Everyone's Problem`,
+            `${this.rng.pick(CHAPTER_FORMS)} and Other Administrative Errors`,
+            `Chapter ${chapter + 1}: ${this.rng.pick(CHAPTER_FORMS)}`
+        ];
+
+        do {
+            title = this.rng.pick(forms);
+        } while (this.usedTitles.has(title));
+
+        this.usedTitles.add(title);
+
+        return title;
+    }
+
+
+    generateChapter(chapter) {
+
+        const rng = new RNG(
+            (this.seed + chapter * 7919) >>> 0
+        );
+
+        const arc = this.arcFor(chapter);
+
+        const pov = this.pickPOV(chapter);
+
+        const location = rng.pick(LOCATIONS);
+
+        const object = rng.pick(OBJECTS);
+
+        const action = rng.pick(ACTIONS);
+
+        const reaction = rng.pick(REACTIONS);
+
+        const thread = this.pickThread(chapter);
+
+        const other = this.characters[
+            rng.int(0, this.characters.length - 1)
+        ];
+
+        const title = this.generateTitle(
+            chapter,
+            arc,
+            pov,
+            location,
+            object
+        );
+
+        const paragraphs = [];
+
+        const openingStyles = {
+            dry:
+                `${pov.name} had learned that disasters were rarely announced with trumpets. More often, they arrived as ordinary administrative problems with unusually confident signatures.`,
+            dramatic:
+                `The morning began beneath a sky that looked personally offended by the existence of the kingdom. ${pov.name} regarded it with the solemnity normally reserved for final battles.`,
+            practical:
+                `${pov.name} had three immediate concerns: food, money, and why ${object} was sitting in a place where it absolutely did not belong.`,
+            anxious:
+                `${pov.name} noticed the problem before anyone else did. This was unfortunate, because noticing problems was how people ended up responsible for them.`,
+            sarcastic:
+                `Naturally, ${pov.name} had expected a quiet day. That was the first mistake.`,
+            formal:
+                `At precisely an unreasonable hour, ${pov.name} received information concerning an incident of potentially considerable administrative significance.`,
+            optimistic:
+                `${pov.name} smiled. Things could still work out. This belief survived approximately four minutes.`,
+            suspicious:
+                `${pov.name} did not trust the room, the map, the object, or the silence. Experience had taught them that silence was usually hiding paperwork.`
+        };
+
+        paragraphs.push(
+            openingStyles[pov.voice]
+        );
+
+        paragraphs.push(
+            `The current matter concerned ${object}, which had appeared at ${location} shortly before anyone could agree on who had been responsible for bringing it there. The official explanation was that nobody had brought it. The unofficial explanation was considerably less reassuring.`
+        );
+
+        paragraphs.push(
+            `${pov.name} was a ${pov.role.toLowerCase()}, which meant that ${pov.goal}. Unfortunately, their particular weakness was that they ${pov.flaw}. Under ordinary circumstances this would have been inconvenient. Under current circumstances, it was practically a plot device.`
+        );
+
+        if (chapter === 0) {
+
+            paragraphs.push(
+                `This was where the story should have introduced a grand destiny. Instead, it introduced ${pov.name}, who had not requested destiny and was currently trying to determine whether destiny accepted returns.`
+            );
+
+            paragraphs.push(
+                `The world was ${this.world.name}. Its most important rule was simple: ${this.world.rule} Its magic operated according to another principle: ${this.world.magic} Nobody considered either fact particularly strange anymore.`
+            );
+
+        } else {
+
+            const previous = this.chapters[chapter - 1];
+
+            paragraphs.push(
+                `The previous day's disaster had not been resolved so much as moved to a different location. ${pov.name} still remembered ${previous.title}, although remembering it had not made it more sensible.`
+            );
+
+            if (chapter % 13 === 0) {
+
+                paragraphs.push(
+                    `A detail that had previously seemed irrelevant suddenly mattered. ${other.name} had known about it, although they had apparently decided that telling anyone would be inconvenient.`
+                );
+
+            }
+
+            if (chapter % 19 === 0) {
+
+                paragraphs.push(
+                    `The ${thread.name} finally produced a consequence large enough that ignoring it became more difficult than addressing it.`
+                );
+
+            }
+        }
+
+        paragraphs.push(
+            `${pov.name} ${action} with ${other.name} while attempting to understand the situation. The conversation was not productive in the traditional sense, but it did establish that everyone involved had misunderstood at least one important fact.`
+        );
+
+        paragraphs.push({
+            text:
+                `"${rng.pick([
+                    "We need a plan.",
+                    "That is not how prophecy works.",
+                    "Who signed this?",
+                    "I have several objections.",
+                    "Can we simply leave?",
+                    "Why is the spoon glowing?",
+                    "This appears to be above my pay grade.",
+                    "Nobody mentioned this in the quest description.",
+                    "I refuse to fight an invoice.",
+                    "We should probably stop touching things."
+                ])}"`,
+            dialogue: true
+        });
+
+        paragraphs.push(
+            `They moved through ${location}, where the atmosphere had the peculiar quality of a place that knew something important but had chosen not to explain it. ${object} remained nearby, quietly becoming more suspicious by the minute.`
+        );
+
+        paragraphs.push(
+            `The world rule caused a new complication. Because ${this.world.rule.toLowerCase()}, the group could not simply solve the problem in a normal fashion. Instead, they had to ${rng.pick([
+                "obtain official permission",
+                "find someone willing to sign a magical document",
+                "travel to another district",
+                "consult an extremely unreliable expert",
+                "complete an absurdly specific quest",
+                "negotiate with an institution",
+                "wait until the moon changed position",
+                "locate the one person who understood the loophole"
+            ])}.`
+        );
+
+        paragraphs.push(
+            `For a brief moment, ${pov.name} remembered their secret: ${pov.secret}. They immediately decided this was not the right time to mention it. This decision would later become important.`
+        );
+
+        if (chapter % 9 === 0) {
+
+            paragraphs.push(
+                `Something changed. It was not dramatic enough to deserve thunder, but it was significant enough that the people who understood the larger situation would later mark this day as a turning point.`
+            );
+
+        } else if (chapter % 5 === 0) {
+
+            paragraphs.push(
+                `A minor victory followed. Unfortunately, minor victories in this world had a habit of attracting major paperwork.`
+            );
+
+        } else {
+
+            paragraphs.push(
+                `${reaction} The incident was therefore classified as unresolved, which was apparently considered progress.`
+            );
+        }
+
+        if (thread.resolved === chapter) {
+
+            paragraphs.push(
+                `By the end of the day, the ${thread.name} had finally reached its conclusion. The answer was simultaneously more complicated and less impressive than anyone had expected. ${pov.name} was not certain whether this counted as success.`
+            );
+
+        } else {
+
+            paragraphs.push(
+                `The ${thread.name} remained unresolved. Somewhere beyond ${location}, another piece of the answer was waiting. Nobody knew exactly where. Everyone agreed it was probably going to be inconvenient.`
+            );
+        }
+
+        if (chapter === 519) {
+
+            paragraphs.push(
+                `At last, the final pieces began to align. The kingdom had survived prophecies, villains, bureaucracy, time debt, questionable quests and several incidents involving dangerous stationery. The original problem had become something larger, stranger and, against all reasonable expectations, meaningful.`
+            );
+
+            paragraphs.push(
+                `${pov.name} looked across the world and realized that the greatest lesson had never been about becoming the strongest hero. It had been about surviving long enough to understand what the story was actually doing.`
+            );
+
+            paragraphs.push(
+                `Then someone asked who was paying for the repairs.`
+            );
+        }
+
+        const text = paragraphs.map(
+            p => typeof p === "string"
+                ? { text:p, dialogue:false }
+                : p
+        );
+
+        this.updateThread(thread, chapter);
+
+        return {
+            number: chapter + 1,
+            title,
+            pov,
+            arc,
+            location,
+            object,
+            thread,
+            text
+        };
+    }
+
+
+    generateChapters() {
+
+        for (let i = 0; i < 520; i++) {
+
+            this.chapters.push(
+                this.generateChapter(i)
+            );
+        }
+    }
+
+
+    makeTitle() {
+
+        const beginnings = [
+            "I Was Reincarnated as",
+            "My New Life Began With",
+            "Nobody Told Me About",
+            "I Accidentally Became",
+            "The Kingdom Hired",
+            "The Demon King Promised",
+            "Apparently I Am",
+            "I Was Summoned to",
+            "The Prophecy Chose",
+            "My Extremely Normal Life"
+        ];
+
+        const subjects = [
+            this.protagonist.role.toLowerCase(),
+            this.rng.pick([
+                "the kingdom's least qualified hero",
+                "the world's worst prophecy",
+                "a suspiciously powerful receptionist",
+                "the person responsible for the apocalypse",
+                "an unemployed final boss",
+                "a magical accounting error",
+                "the owner of destiny",
+                "a village nobody remembers",
+                "a legendary spoon",
+                "the kingdom's emergency paperwork"
+            ])
+        ];
+
+        const endings = [
+            "and Everything Went Wrong",
+            "but the Paperwork Was Worse",
+            "and Nobody Read the Instructions",
+            "but the Demon King Needed Help",
+            "and the Guild Regretted Everything",
+            "for Completely Unreasonable Reasons",
+            "and Destiny Requested a Receipt",
+            "but This Was Technically Legal",
+            "and the Prophecy Was Incorrect",
+            "until Someone Asked for My Signature"
+        ];
+
+        return `${this.rng.pick(beginnings)} ${this.rng.pick(subjects)} ${this.rng.pick(endings)}`;
+    }
+
+
+    makeSynopsis(title) {
+
+        return `${title}. In the ${this.world.name}, ${this.premise} The result is a sprawling parody adventure involving ${this.rng.pick([
+            "prophecies that require customer support",
+            "guilds with questionable employment practices",
+            "villains who desperately want weekends",
+            "heroes whose powers are badly documented",
+            "royal families with too many committees",
+            "dungeons concerned about workplace safety",
+            "time travel invoices",
+            "magical bureaucracy"
+        ])}, shifting alliances, suspicious artifacts and a problem that nobody is qualified to solve.`;
+    }
+}
+
+
+/* -------------------------
+   APPLICATION
+------------------------- */
+
+let engine = null;
+
+let currentChapter = 0;
+
+let seedCounter = 0;
+
+
+function makeSeed() {
+
+    const now = Date.now() >>> 0;
+
+    seedCounter++;
+
+    return (
+        now ^
+        Math.imul(
+            seedCounter,
+            2654435761
+        )
+    ) >>> 0;
+}
+
+
+function escapeHTML(value) {
+
+    return String(value)
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#039;");
+}
+
+
+function createNovel() {
+
+    const seed = makeSeed();
+
+    engine = new NovelEngine(seed);
+
+    currentChapter = 0;
+
+    renderNovel();
+
+    window.scrollTo({
+        top: 0,
+        behavior: "smooth"
+    });
+
+    document.getElementById("status").innerHTML =
+        `<strong>GENERATED.</strong> ` +
+        `New world created with 520 chapters, ` +
+        `${engine.characters.length} POV characters and ` +
+        `${engine.threads.length} persistent story threads.`;
+}
+
+
+function renderNovel() {
+
+    const novelArea =
+        document.getElementById("novelArea");
+
+    const title =
+        engine.makeTitle();
+
+    const synopsis =
+        engine.makeSynopsis(title);
+
+    engine.generatedTitle = title;
+
+    engine.generatedSynopsis = synopsis;
+
+    novelArea.innerHTML = `
+
+        <section class="novel-header">
+
+            <div class="novel-label">
+                PROCEDURALLY GENERATED NOVEL
+            </div>
+
+            <h2 class="novel-title">
+                ${escapeHTML(title)}
+            </h2>
+
+            <p class="novel-synopsis">
+                ${escapeHTML(synopsis)}
+            </p>
+
+            <div class="tags">
+                <span class="tag">PARODY</span>
+                <span class="tag">ISEKAI</span>
+                <span class="tag">FANTASY</span>
+                <span class="tag">COMEDY</span>
+                <span class="tag">MULTI-POV</span>
+                <span class="tag">PROCEDURAL</span>
+            </div>
+
+            <div class="meta-grid">
+
+                <div class="meta-box">
+                    <small>Chapters</small>
+                    <strong>520</strong>
+                </div>
+
+                <div class="meta-box">
+                    <small>POV Cast</small>
+                    <strong>${engine.characters.length}</strong>
+                </div>
+
+                <div class="meta-box">
+                    <small>Story Arcs</small>
+                    <strong>${engine.arcs.length}</strong>
+                </div>
+
+                <div class="meta-box">
+                    <small>Seed</small>
+                    <strong>${engine.seed}</strong>
+                </div>
+
+            </div>
+
+        </section>
+
+        <section class="world">
+
+            <div class="panel">
+
+                <h2>WORLD SETTING</h2>
+
+                <p>
+                    <strong>${escapeHTML(engine.world.name)}</strong>
+                </p>
+
+                <br>
+
+                <ul>
+                    ${engine.worldFeatures.map(
+                        item =>
+                            `<li>${escapeHTML(item)}</li>`
+                    ).join("")}
+                </ul>
+
+            </div>
+
+            <div class="panel">
+
+                <h2>AUTHOR NOTES</h2>
+
+                <p>
+                    This novel was not written by a responsible author.
+                    It was assembled by a browser that has been given
+                    far too much authority over fictional people.
+                </p>
+
+                <br>
+
+                <p>
+                    The generator deliberately rotates POV characters,
+                    locations, conflicts, objects, world rules and
+                    story threads so that the narrative does not simply
+                    repeat the same paragraph 520 times.
+                </p>
+
+            </div>
+
+        </section>
+
+        <section class="reader">
+
+            <aside class="sidebar">
+
+                <div class="side-section">
+                    <div class="side-label">WORLD</div>
+                    <div class="side-value">
+                        ${escapeHTML(engine.world.name)}
+                    </div>
+                </div>
+
+                <div class="side-section">
+                    <div class="side-label">PROTAGONIST</div>
+                    <div class="side-value">
+                        ${escapeHTML(engine.protagonist.name)}
+                    </div>
+                </div>
+
+                <div class="side-section">
+                    <div class="side-label">CAST</div>
+                    <div class="side-value">
+                        ${engine.characters.length} characters
+                    </div>
+                </div>
+
+                <div class="side-section">
+                    <div class="side-label">STORY</div>
+                    <div class="side-value">
+                        ${engine.arcs.length} major arcs
+                    </div>
+                </div>
+
+            </aside>
+
+            <article class="chapter">
+
+                <div id="chapterView"></div>
+
+            </article>
+
+        </section>
+    `;
+
+    renderChapter();
+}
+
+
+function renderChapter() {
+
+    const chapter =
+        engine.chapters[currentChapter];
+
+    const view =
+        document.getElementById("chapterView");
+
+    const progress =
+        ((currentChapter + 1) / engine.chapters.length) * 100;
+
+    view.innerHTML = `
+
+        <div class="chapter-top">
+
+            <div class="chapter-number">
+                CHAPTER ${String(chapter.number).padStart(3, "0")}
+            </div>
+
+            <div class="chapter-pov">
+                POV: ${escapeHTML(chapter.pov.name)}
+                · ${escapeHTML(chapter.pov.role)}
+            </div>
+
+        </div>
+
+        <h2>
+            ${escapeHTML(chapter.title)}
+        </h2>
+
+        <p class="chapter-intro">
+            ${escapeHTML(chapter.arc.title)}
+            · ${escapeHTML(chapter.location)}
+        </p>
+
+        <div class="progress">
+            <div style="width:${progress}%"></div>
+        </div>
+
+        <div class="story">
+
+            ${chapter.text.map(
+                paragraph => {
+
+                    const cls =
+                        paragraph.dialogue
+                            ? "dialogue"
+                            : "";
+
+                    return `
+                        <p class="${cls}">
+                            ${escapeHTML(paragraph.text)}
+                        </p>
+                    `;
+                }
+            ).join("")}
+
+        </div>
+
+        <div class="chapter-controls">
+
+            <button
+                class="btn prev"
+                id="prevBtn"
+                ${currentChapter === 0 ? "disabled" : ""}
+            >
+                ← PREVIOUS
+            </button>
+
+            <div class="chapter-count">
+                ${chapter.number} / ${engine.chapters.length}
+            </div>
+
+            <button
+                class="btn primary next"
+                id="nextBtn"
+                ${currentChapter === engine.chapters.length - 1
+                    ? "disabled"
+                    : ""}
+            >
+                NEXT →
+            </button>
+
+        </div>
+    `;
+
+    document
+        .getElementById("prevBtn")
+        .addEventListener("click", () => {
+
+            if (currentChapter > 0) {
+
+                currentChapter--;
+
+                renderChapter();
+
+                window.scrollTo({
+                    top: 0,
+                    behavior: "smooth"
+                });
+            }
+        });
+
+    document
+        .getElementById("nextBtn")
+        .addEventListener("click", () => {
+
+            if (
+                currentChapter <
+                engine.chapters.length - 1
+            ) {
+
+                currentChapter++;
+
+                renderChapter();
+
+                window.scrollTo({
+                    top: 0,
+                    behavior: "smooth"
+                });
+            }
+        });
+}
+
+
+/* -------------------------
+   BUTTONS
+------------------------- */
+
+document
+    .getElementById("generateBtn")
+    .addEventListener("click", createNovel);
+
+document
+    .getElementById("resetBtn")
+    .addEventListener("click", createNovel);
+
+document
+    .getElementById("randomTop")
+    .addEventListener("click", createNovel);
+
+document
+    .getElementById("jumpBtn")
+    .addEventListener("click", () => {
+
+        if (!engine) return;
+
+        currentChapter =
+            Math.floor(
+                Math.random() *
+                engine.chapters.length
+            );
+
+        renderChapter();
+
+        document
+            .querySelector(".chapter")
+            .scrollIntoView({
+                behavior: "smooth",
+                block: "start"
+            });
+    });
+
+
+/* -------------------------
+   KEYBOARD NAVIGATION
+------------------------- */
+
+document.addEventListener(
+    "keydown",
+    event => {
+
+        if (!engine) return;
+
+        if (
+            event.target.tagName === "INPUT" ||
+            event.target.tagName === "TEXTAREA"
+        ) {
+            return;
+        }
+
+        if (event.key === "ArrowRight") {
+
+            if (
+                currentChapter <
+                engine.chapters.length - 1
+            ) {
+
+                currentChapter++;
+
+                renderChapter();
+
+                window.scrollTo({
+                    top: 0,
+                    behavior: "smooth"
+                });
+            }
+        }
+
+        if (event.key === "ArrowLeft") {
+
+            if (currentChapter > 0) {
+
+                currentChapter--;
+
+                renderChapter();
+
+                window.scrollTo({
+                    top: 0,
+                    behavior: "smooth"
+                });
+            }
+        }
+
+        if (event.key.toLowerCase() === "n") {
+
+            createNovel();
+        }
+    }
+);
+
+
+/* -------------------------
+   START
+------------------------- */
+
+createNovel();
+
+</script>
+
 </body>
 </html>
