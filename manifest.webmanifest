@@ -1,0 +1,11 @@
+{
+  "name": "LIGHTNOVEL — Personal Reading Library",
+  "short_name": "LIGHTNOVEL",
+  "description": "A personal static light novel library and publishing workspace.",
+  "start_url": "./index.html",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#0b0c10",
+  "theme_color": "#0b0c10",
+  "icons": [{"src":"assets/icon.svg","sizes":"any","type":"image/svg+xml","purpose":"any maskable"}]
+}
